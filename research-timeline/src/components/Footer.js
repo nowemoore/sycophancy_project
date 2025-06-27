@@ -42,7 +42,7 @@ const Footer = () => {
         alignItems: 'center'
       }}>
         <img 
-          src="/signature.png" 
+          src="./signature.png" 
           alt="Signature" 
           style={{
             height: '20px',
