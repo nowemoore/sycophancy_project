@@ -26,8 +26,9 @@
   },
   
   "scripts": {
+    "build": "PUBLIC_URL=/sycophancy_project npm run build:original",
+    "build:original": "react-scripts build",
     "start": "react-scripts start",
-    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
