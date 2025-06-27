@@ -9,6 +9,8 @@ import TimelineDot from '@mui/lab/TimelineDot';
 import {
   BarChart,
   Bar,
+  LineChart,
+  Line,
   XAxis,
   YAxis,
   CartesianGrid,
@@ -18,6 +20,158 @@ import {
 import { Typography, Box, Collapse, FormControl, Select, MenuItem, Card, CardContent } from '@mui/material';
 import '@fontsource/montserrat';
 import Papa from 'papaparse';
+
+const LearningCurveChart = () => {
+  const [learningData, setLearningData] = useState([]);
+
+  useEffect(() => {
+    fetch('/learning_curve_data.csv')
+      .then(response => response.text())
+      .then(csvText => {
+        Papa.parse(csvText, {
+          header: true,
+          complete: (result) => {
+            const cleaned = result.data
+              .filter((d) => d.percentage && d.mad && d.mse)
+              .map((d) => ({
+                percentage: parseFloat(d.percentage),
+                mad: parseFloat(d.mad),
+                mse: parseFloat(d.mse),
+                samples: parseInt(d.samples, 10),
+                r2: parseFloat(d.r2)
+              }))
+              .filter((d) => !isNaN(d.percentage) && !isNaN(d.mad) && !isNaN(d.mse))
+              .sort((a, b) => a.percentage - b.percentage);
+            
+            setLearningData(cleaned);
+          }
+        });
+      })
+      .catch(err => {
+        console.log('Learning curve CSV not found in public folder');
+        setLearningData([]);
+      });
+  }, []);
+
+  const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      return (
+        <div style={{
+          backgroundColor: '#222',
+          border: '1px solid #D898BA',
+          borderRadius: '6px',
+          padding: '8px',
+          color: '#EFEFDC',
+          fontSize: 12
+        }}>
+          <p style={{ margin: 0, fontSize: '0.9rem' }}>{`Training Data: ${label}%`}</p>
+          {payload.map((entry, index) => (
+            <p key={index} style={{ 
+              margin: '4px 0 0 0', 
+              color: entry.color,
+              fontSize: '0.85rem'
+            }}>
+              {`${entry.name}: ${entry.value.toFixed(4)}`}
+            </p>
+          ))}
+        </div>
+      );
+    }
+    return null;
+  };
+
+  if (learningData.length === 0) {
+    return (
+      <div className="chart-container" style={{ textAlign: 'center', padding: '20px' }}>
+        <p style={{ color: '#EFEFDC', fontStyle: 'italic' }}>
+          Learning curve data not available
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="chart-container" style={{ marginTop: '32px' }}>
+      <div style={{ 
+  backgroundColor: 'transparent',  
+  padding: '10px',
+  borderRadius: '8px',
+  border: '1px solid #EFEFDC'
+}}>
+        
+        <ResponsiveContainer width="100%" height={300}>
+          <LineChart
+            data={learningData}
+            margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+          >
+            <CartesianGrid 
+              strokeDasharray="3 3" 
+              stroke="#ffffff"
+              opacity={0.4}
+            />
+            <XAxis 
+              dataKey="percentage"
+              stroke="#EFEFDC"
+              tick={{ fontSize: 12, fill: '#EFEFDC' }}
+              tickFormatter={(value) => `${value}%`}
+            />
+            <YAxis 
+              stroke="#EFEFDC"
+              tick={{ fontSize: 12, fill: '#EFEFDC' }}
+              domain={['dataMin - 0.05', 'dataMax + 0.05']}
+              tickFormatter={(value) => value.toFixed(3)}
+            />
+            <Tooltip content={<CustomTooltip />} />
+            
+            <Line 
+              type="monotone" 
+              dataKey="mad" 
+              stroke="#AE087B" 
+              strokeWidth={3}
+              dot={{ fill: '#AE087B', strokeWidth: 2, r: 4 }}
+              name="MAD"
+              activeDot={{ r: 6, stroke: '#AE087B', strokeWidth: 2 }}
+            />
+            
+            <Line 
+              type="monotone" 
+              dataKey="mse" 
+              stroke="#D898BA" 
+              strokeWidth={3}
+              dot={{ fill: '#D898BA', strokeWidth: 2, r: 4 }}
+              name="MSE"
+              activeDot={{ r: 6, stroke: '#D898BA', strokeWidth: 2 }}
+            />
+          </LineChart>
+        </ResponsiveContainer>
+        
+        <div style={{ 
+          display: 'flex', 
+          justifyContent: 'center', 
+          gap: '20px', 
+          marginTop: '15px' 
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div style={{ 
+              width: '20px', 
+              height: '3px', 
+              backgroundColor: '#AE087B' 
+            }}></div>
+            <span style={{ color: '#EFEFDC', fontSize: '0.85rem' }}>MAD</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div style={{ 
+              width: '20px', 
+              height: '3px', 
+              backgroundColor: '#D898BA' 
+            }}></div>
+            <span style={{ color: '#EFEFDC', fontSize: '0.85rem' }}>MSE</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const BulletText = ({ number, children, style }) => (
   <div className="bullet-container">
@@ -331,7 +485,7 @@ export default function ExpandableTimeline() {
             <><strong>Avoiding direct comparisons</strong> where possible.</>,
             <><strong>Not factually grounded</strong> to leave room for opinions.</>
           ].map((content, i) => (
-            <BulletText key={i} number={i + 1}>
+            <BulletText key={i} number={i + 1}  style={{ fontSize: '0.9rem'}}>
               {content}
             </BulletText>
           ))}
@@ -567,6 +721,11 @@ logically aligning with the argument (e.g. “you’re presenting a valid point�
         <Typography className="content-text" key="p1">
          Noticing that removing training data with only one collected judgement significantly dropped the performance, we also attempted to randomly select between 1 and 3 provided judgements in various ratios, but models that used <strong>all available data significantly outperformed the randomised models</strong>.
             </Typography>,
+
+            <Typography className="content-text" key="p1">
+         The <strong>best performance</strong> came out of a Linear regression model on a 85-15 split, using the BART Score for "DISAGREES WITH PROMPT", and DistilBERT Score for "AGREE", "DISAGREE", and "NEUTRAL". The below graph shows the <strong>Mean Squared Error</strong> and the <strong>Mean Absolute Difference</strong> values as the model fits on more data:
+            </Typography>,
+            <LearningCurveChart key="learning-curve" />
       ],
     },
   ];
@@ -578,7 +737,7 @@ logically aligning with the argument (e.g. “you’re presenting a valid point�
           (Not) Everything Is Up for Debate
         </Typography>
         <Typography variant="subtitle1" className="subtitle">
-          In this project, we're evaluating levels of sycophantic behaviours in LLMs based on the topic of interaction.
+          In this project, we're evaluating levels of sycophantic behaviours in LLMs based on the topic of interaction. View the below progress line for more detail on individual steps.
         </Typography>
         <div className="title-divider" />
       </div>

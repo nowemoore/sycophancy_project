@@ -64,9 +64,10 @@
 
 .main-title {
     color: #EFEFDC;
-  font-weight: 900;
+  font-weight: 800 !important;
   margin-bottom: 8px;
-  font-size: 3rem;
+  padding-bottom: 10px;
+  font-size: 3rem !important;
   text-shadow: 
     0 0 10px rgba(239, 239, 220, 0.3),
     0 0 20px rgba(170, 8, 123, 0.2);
@@ -84,6 +85,8 @@
 .subtitle {
   color: #EFEFDC;
   font-weight: 400;
+  max-width: 80%;
+  margin: auto !important;
   font-size: 1rem;
   text-shadow: 0 0 8px rgba(239, 239, 220, 0.2);
   transition: all 0.3s ease;
