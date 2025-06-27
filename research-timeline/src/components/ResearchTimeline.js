@@ -25,7 +25,7 @@ const LearningCurveChart = () => {
   const [learningData, setLearningData] = useState([]);
 
   useEffect(() => {
-    fetch('/learning_curve_data.csv')
+    fetch('./learning_curve_data.csv')
       .then(response => response.text())
       .then(csvText => {
         Papa.parse(csvText, {
@@ -246,7 +246,7 @@ const PromptExplorer = () => {
 
   useEffect(() => {
     // Load the CSV file
-    fetch('/syc_prompts.csv')
+    fetch('./syc_prompts.csv')
       .then(response => response.text())
       .then(csvText => {
         Papa.parse(csvText, {
@@ -402,7 +402,7 @@ export default function ExpandableTimeline() {
   };
 
   useEffect(() => {
-    fetch('/tags_final.csv')
+    fetch('./tags_final.csv')
       .then(response => response.text())
       .then(csvText => {
         Papa.parse(csvText, {
