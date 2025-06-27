@@ -1,24 +1,8 @@
-* {
-  font-family: 'Montserrat', sans-serif !important;
-}
-
-body {
-  margin: 0;
-  background-color: #111;
-  color: white;
-}
-
-body::-webkit-scrollbar {
-  width: 0;
-  height: 0;
-}
-
 .main-title,
 .subtitle,
 .bullet-text,
 .timeline-title,
-.content-text,
-.main-container {
+.content-text {
   font-family: 'Montserrat', sans-serif;
 }
 
@@ -61,14 +45,6 @@ body::-webkit-scrollbar {
   font-size: 16px;
 }
 
-/* New styles extracted from JS */
-.main-container {
-  background-color: #111;
-  min-height: 100vh;
-  padding: 48px 0;
-  font-family: 'Montserrat', sans-serif;
-}
-
 @media (min-width: 900px) {
   .main-container {
     padding: 48px 48px;
@@ -87,16 +63,37 @@ body::-webkit-scrollbar {
 }
 
 .main-title {
-  color: #EFEFDC;
-  font-weight: 700;
+    color: #EFEFDC;
+  font-weight: 900;
   margin-bottom: 8px;
-  font-size: 2.125rem;
+  font-size: 3rem;
+  text-shadow: 
+    0 0 10px rgba(239, 239, 220, 0.3),
+    0 0 20px rgba(170, 8, 123, 0.2);
+  transition: all 0.3s ease;
+}
+
+.main-title:hover {
+  text-shadow: 
+    0 0 15px rgba(239, 239, 220, 0.6),
+    0 0 25px rgba(170, 8, 123, 0.4),
+    0 0 35px rgba(170, 8, 123, 0.3);
+  color: #ffffff;
 }
 
 .subtitle {
   color: #EFEFDC;
   font-weight: 400;
   font-size: 1rem;
+  text-shadow: 0 0 8px rgba(239, 239, 220, 0.2);
+  transition: all 0.3s ease;
+}
+
+.subtitle:hover {
+  text-shadow: 
+    0 0 12px rgba(239, 239, 220, 0.4),
+    0 0 20px rgba(96, 186, 174, 0.2);
+  color: #ffffff;
 }
 
 .title-divider {
@@ -146,7 +143,7 @@ body::-webkit-scrollbar {
   height: 200px;
   overflow-y: auto;
   overflow-x: hidden;
-  border: 1px solid #333;
+  border: 1px solid #dad5d57f;
   border-radius: 4px;
 }
 
@@ -169,6 +166,17 @@ body::-webkit-scrollbar {
 
 .timeline-title {
   transition: all 0.2s ease;
+  text-shadow: 
+    0 0 8px rgba(239, 239, 220, 0.2),
+    0 0 15px rgba(96, 186, 174, 0.059);
+}
+
+.timeline-title:hover {
+  text-shadow: 
+    0 0 12px rgba(239, 239, 220, 0.299),
+    0 0 20px rgba(96, 186, 174, 0.128),
+    0 0 30px rgba(96, 186, 174, 0.03);
+  color: #fedbee !important;
 }
 
 .timeline-title.active {

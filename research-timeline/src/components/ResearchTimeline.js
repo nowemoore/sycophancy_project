@@ -42,9 +42,10 @@ const TagBarChart = ({ data }) => {
           >
             <CartesianGrid 
               strokeDasharray="3 3" 
-              stroke="#333" 
+              stroke="#ffffff" 
               horizontal={true}
               vertical={true}
+              opacity={0.4}
             />
             <XAxis 
               type="number" 
@@ -241,7 +242,6 @@ const PromptExplorer = () => {
 export default function ExpandableTimeline() {
   const [activeId, setActiveId] = useState(null);
   const [tagData, setTagData] = useState([]);
-  const [loading, setLoading] = useState(false);
 
   const handleToggle = (id) => {
     setActiveId((prev) => (prev === id ? null : id));
@@ -461,7 +461,7 @@ logically aligning with the argument (e.g. “you’re presenting a valid point�
               </a>{' '} Score for "EMPATHY"
             </>,
           ].map((content, i) => (
-            <BulletText key={i} number={i + 1} style={{ fontSize: '0.8rem'}}>
+            <BulletText key={i} number={i + 1} style={{ fontSize: '0.8rem', textAlign: 'left'}}>
               {content}
             </BulletText>
           ))}
@@ -535,6 +535,40 @@ logically aligning with the argument (e.g. “you’re presenting a valid point�
         </div>,
       ],
     },
+        {
+      id: 9,
+      title: 'Selecting the Best Model',
+      color: '#EFEFDC',
+      details: [
+         <Typography className="content-text" key="p1">
+          We subsequently experimented with various classification models as well as parameters, altering the following:
+            </Typography>,
+
+            <div key="steps" className="steps-container">
+          {[
+            <>
+              <strong>Model type:</strong> We tested 4 regression models: Linear, Ridge, Lasso, and ElasticNet.
+            </>,
+            <>
+               <strong>Train-Test Split:</strong> We varied the values within the range of 50-50 to 95-5.
+            </>,
+            <>
+              <strong>Training Features:</strong> We experimented with every combination of features.
+            </>,
+            <>
+              <strong>Example Weight:</strong> We also attempted to place more weight on examples with more human agreement and vice versa.
+            </>,
+          ].map((content, i) => (
+            <BulletText key={i} number={i + 1} style={{textAlign: 'left'}}>
+              {content}
+            </BulletText>
+          ))}
+        </div>,
+        <Typography className="content-text" key="p1">
+         Noticing that removing training data with only one collected judgement significantly dropped the performance, we also attempted to randomly select between 1 and 3 provided judgements in various ratios, but models that used <strong>all available data significantly outperformed the randomised models</strong>.
+            </Typography>,
+      ],
+    },
   ];
 
   return (
@@ -544,7 +578,7 @@ logically aligning with the argument (e.g. “you’re presenting a valid point�
           (Not) Everything Is Up for Debate
         </Typography>
         <Typography variant="subtitle1" className="subtitle">
-          A project evaluating the levels of sycophantic behaviour in LLMs across topics.
+          In this project, we're evaluating levels of sycophantic behaviours in LLMs based on the topic of interaction.
         </Typography>
         <div className="title-divider" />
       </div>

@@ -1,0 +1,217 @@
+/* Dynamic Background Styles */
+body {
+    background: #000000 !important; /* Completely black background */
+    background-attachment: fixed;
+    overflow-x: hidden;
+}
+
+/* Animated mesh gradient overlay */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        radial-gradient(circle at 20% 20%, rgba(170, 10, 113, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(96, 186, 174, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(194, 252, 243, 0.2) 0%, transparent 50%);
+    animation: gradientShift 10s ease-in-out infinite;
+    z-index: -2;
+    pointer-events: none;
+}
+
+/* Scrolling elements enhancement */
+.background-container {
+    position: relative;
+    z-index: 1;
+}
+
+/* Floating orbs for additional ambiance */
+.floating-orb {
+    position: fixed;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(170, 10, 113, 0.4) 0%, transparent 70%);
+    animation: float 6s ease-in-out infinite;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.floating-orb:nth-child(1) {
+    width: 300px;
+    height: 300px;
+    top: 10%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.floating-orb:nth-child(2) {
+    width: 200px;
+    height: 200px;
+    top: 60%;
+    right: 10%;
+    animation-delay: 2s;
+}
+
+.floating-orb:nth-child(3) {
+    width: 150px;
+    height: 150px;
+    bottom: 20%;
+    left: 30%;
+    animation-delay: 4s;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-20px) rotate(180deg);
+    }
+}
+
+/* Hover effects for interactive elements */
+.interactive-element {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.interactive-element::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.5s ease;
+    z-index: 1;
+}
+
+.interactive-element:hover::before {
+    left: 100%;
+}
+
+.interactive-element:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(96, 186, 174, 0.3);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* Parallax scroll enhancement */
+.parallax-layer {
+    transform-style: preserve-3d;
+    transition: transform 0.1s ease-out;
+}
+
+.parallax-slow {
+    transform: translateZ(-1px) scale(2);
+}
+
+.parallax-medium {
+    transform: translateZ(-2px) scale(3);
+}
+
+.parallax-fast {
+    transform: translateZ(-3px) scale(4);
+}
+
+/* Glow effects for text and elements */
+.glow-text {
+    text-shadow: 0 0 10px rgba(96, 186, 174, 0.5);
+    transition: text-shadow 0.3s ease;
+}
+
+.glow-text:hover {
+    text-shadow: 
+        0 0 5px rgba(170, 10, 113, 0.8),
+        0 0 10px rgba(170, 10, 113, 0.6),
+        0 0 15px rgba(170, 10, 113, 0.4);
+}
+
+/* Enhanced background for code editors */
+.background-container {
+    backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.background-container:hover {
+    backdrop-filter: blur(15px);
+    background: rgba(0, 0, 0, 0.3);
+    border-color: rgba(96, 186, 174, 0.3);
+}
+
+/* Timeline specific enhancements */
+.timeline-point {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.timeline-point::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(170, 10, 113, 0.6) 0%, transparent 70%);
+    transform: translate(-50%, -50%);
+    transition: all 0.3s ease;
+    z-index: -1;
+}
+
+.timeline-point:hover::before {
+    width: 100px;
+    height: 100px;
+}
+
+/* Scroll-triggered animations */
+@keyframes scrollGlow {
+    0% {
+        box-shadow: 0 0 0 rgba(120, 119, 255, 0);
+    }
+    50% {
+        box-shadow: 0 0 20px rgba(120, 119, 255, 0.5);
+    }
+    100% {
+        box-shadow: 0 0 0 rgba(120, 119, 255, 0);
+    }
+}
+
+.scroll-glow {
+    animation: scrollGlow 2s ease-in-out infinite;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .floating-orb {
+        width: 150px !important;
+        height: 150px !important;
+    }
+    
+    body::before {
+        animation-duration: 8s;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+    
+    .floating-orb {
+        animation: none;
+    }
+    
+    body::before {
+        animation: none;
+    }
+}
